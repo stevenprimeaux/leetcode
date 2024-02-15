@@ -2,27 +2,11 @@ pub mod p_0000;
 pub mod p_0200;
 pub mod p_0300;
 pub mod p_0400;
+pub mod p_0800;
 
-use crate::{ListNode, Solution};
+use crate::Solution;
 
 impl Solution {
-    // 876
-    pub fn middle_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        let mut length: i32 = 0;
-        let mut node_current: Box<ListNode> = head.clone()?;
-        while node_current.next.is_some() {
-            node_current = node_current.next?;
-            length += 1;
-        }
-
-        node_current = head?;
-        for _ in 1..=((length + 1) / 2) {
-            node_current = node_current.next?;
-        }
-
-        Some(node_current)
-    }
-
     // 1342
     pub fn number_of_steps(num: i32) -> i32 {
         let mut num_current: i32 = num;
