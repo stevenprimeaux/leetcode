@@ -71,20 +71,20 @@ impl Solution {
     pub fn is_valid(s: String) -> bool {
         let opening_for: HashMap<char, char> = HashMap::from(PARENS);
 
-        let mut s_stack: Vec<char> = vec![];
+        let mut stack: Vec<char> = vec![];
         for c in s.chars() {
             if is_opening(c) {
-                s_stack.push(c);
+                stack.push(c);
             }
             if is_closing(c) {
-                if !s_stack.ends_with(&[*opening_for.get(&c).unwrap()]) {
+                if !stack.ends_with(&[*opening_for.get(&c).unwrap()]) {
                     return false;
                 }
-                s_stack.pop();
+                stack.pop();
             }
         }
 
-        s_stack.is_empty()
+        stack.is_empty()
     }
 
     // 21
