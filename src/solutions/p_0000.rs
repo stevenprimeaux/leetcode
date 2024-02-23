@@ -1,7 +1,7 @@
 use crate::{
     constants::{PARENS, ROMAN},
     util::{is_closing, is_opening, reverse},
-    Solution,
+    ListNode, Solution,
 };
 
 use std::{collections::HashMap, convert::TryInto};
@@ -85,5 +85,26 @@ impl Solution {
         }
 
         s_stack.is_empty()
+    }
+
+    // 21
+    pub fn merge_two_lists(
+        list1: Option<Box<ListNode>>,
+        list2: Option<Box<ListNode>>,
+    ) -> Option<Box<ListNode>> {
+        match (list1, list2) {
+            (None, None) => None,
+            (Some(l), None) | (None, Some(l)) => Some(l),
+            (Some(l_1), Some(l_2)) => match l_1.val < l_2.val {
+                true => Some(Box::new(ListNode {
+                    val: l_1.val,
+                    next: Self::merge_two_lists(l_1.next, Some(l_2)),
+                })),
+                false => Some(Box::new(ListNode {
+                    val: l_2.val,
+                    next: Self::merge_two_lists(l_2.next, Some(l_1)),
+                })),
+            },
+        }
     }
 }

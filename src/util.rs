@@ -9,9 +9,9 @@ pub fn reverse(mut x: i32) -> i32 {
 }
 
 pub fn is_opening(c: char) -> bool {
-    "({[".chars().any(|op: char| op == c)
+    "({[".chars().any(|op: char| c == op)
 }
 
 pub fn is_closing(c: char) -> bool {
-    ")}]".chars().any(|cl: char| cl == c)
+    ")}]".chars().any(|cl: char| c == cl)
 }
