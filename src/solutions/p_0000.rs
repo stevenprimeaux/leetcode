@@ -107,4 +107,71 @@ impl Solution {
             },
         }
     }
+
+    // 26
+    pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
+        nums.dedup();
+
+        nums.len().try_into().unwrap()
+    }
+
+    // 27
+    pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
+        nums.retain(|x: &i32| x != &val);
+
+        nums.len().try_into().unwrap()
+    }
+
+    // 28
+    pub fn str_str(haystack: String, needle: String) -> i32 {
+        match haystack.find(&needle) {
+            Some(i) => i.try_into().unwrap(),
+            None => -1,
+        }
+    }
+
+    // 35
+    pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
+        match nums.binary_search(&target) {
+            Ok(i) | Err(i) => i.try_into().unwrap(),
+        }
+    }
+
+    // 58
+    pub fn length_of_last_word(s: String) -> i32 {
+        match s.split_whitespace().last() {
+            Some(word_last) => word_last.len().try_into().unwrap(),
+            None => 0,
+        }
+    }
+
+    // 66
+    pub fn plus_one(digits: Vec<i32>) -> Vec<i32> {
+        let mut digits_update: Vec<i32> = digits;
+        if let Some(last) = digits_update.last_mut() {
+            *last += 1;
+        }
+
+        digits_update.reverse();
+        let mut overflow: bool = true;
+        let mut start_current: usize = 0;
+        while overflow == true {
+            overflow = false;
+
+            for i in start_current..digits_update.len() {
+                if digits_update[i] > 9 {
+                    if digits_update.get(i + 1).is_none() {
+                        digits_update.push(0);
+                        overflow = true;
+                    }
+                    digits_update[i + 1] += digits_update[i] / 10;
+                    digits_update[i] %= 10;
+                }
+            }
+            start_current = digits_update.len() - 1;
+        }
+        digits_update.reverse();
+
+        digits_update
+    }
 }
