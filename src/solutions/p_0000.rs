@@ -1,10 +1,10 @@
 use crate::{
     constants::{PARENS, ROMAN},
-    util::{is_closing, is_opening, reverse},
+    util::{deoverflow, is_closing, is_opening, reverse},
     ListNode, Solution,
 };
 
-use std::{collections::HashMap, convert::TryInto};
+use std::{cmp::max, collections::HashMap, convert::TryInto, iter::zip};
 
 impl Solution {
     // 1
@@ -152,26 +152,32 @@ impl Solution {
             *last += 1;
         }
 
-        digits_update.reverse();
-        let mut overflow: bool = true;
-        let mut start_current: usize = 0;
-        while overflow == true {
-            overflow = false;
-
-            for i in start_current..digits_update.len() {
-                if digits_update[i] > 9 {
-                    if digits_update.get(i + 1).is_none() {
-                        digits_update.push(0);
-                        overflow = true;
-                    }
-                    digits_update[i + 1] += digits_update[i] / 10;
-                    digits_update[i] %= 10;
-                }
-            }
-            start_current = digits_update.len() - 1;
-        }
-        digits_update.reverse();
+        deoverflow(&mut digits_update, 10, false);
 
         digits_update
+    }
+
+    // 67
+    pub fn add_binary(a: String, b: String) -> String {
+        let l: usize = max(a.len(), b.len());
+
+        let a_array: Vec<i32> = format!("{:0>width$}", a, width = l)
+            .chars()
+            .map(|c: char| i32::from_str_radix(&c.to_string(), 10).unwrap_or(0))
+            .collect();
+
+        let b_array: Vec<i32> = format!("{:0>width$}", b, width = l)
+            .chars()
+            .map(|c: char| i32::from_str_radix(&c.to_string(), 10).unwrap_or(0))
+            .collect();
+
+        let mut sums: Vec<i32> = Vec::with_capacity(l);
+        for (a, b) in zip(a_array, b_array).rev() {
+            sums.push(a + b);
+        }
+
+        deoverflow(&mut sums, 2, true);
+
+        sums.iter().rev().map(|i: &i32| i.to_string()).collect()
     }
 }
