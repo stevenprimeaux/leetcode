@@ -162,19 +162,16 @@ impl Solution {
         let l: usize = max(a.len(), b.len());
 
         let a_array: Vec<i32> = format!("{:0>width$}", a, width = l)
-            .chars()
-            .map(|c: char| i32::from_str_radix(&c.to_string(), 10).unwrap_or(0))
+            .split("")
+            .filter_map(|s: &str| s.parse().ok())
             .collect();
 
         let b_array: Vec<i32> = format!("{:0>width$}", b, width = l)
-            .chars()
-            .map(|c: char| i32::from_str_radix(&c.to_string(), 10).unwrap_or(0))
+            .split("")
+            .filter_map(|s: &str| s.parse().ok())
             .collect();
 
-        let mut sums: Vec<i32> = Vec::with_capacity(l);
-        for (a, b) in zip(a_array, b_array).rev() {
-            sums.push(a + b);
-        }
+        let mut sums: Vec<i32> = zip(a_array, b_array).rev().map(|(a, b)| a + b).collect();
 
         deoverflow(&mut sums, 2, true);
 
