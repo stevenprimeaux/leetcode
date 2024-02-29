@@ -4,7 +4,12 @@ use crate::{
     ListNode, Solution,
 };
 
-use std::{cmp::max, collections::HashMap, convert::TryInto, iter::zip};
+use std::{
+    cmp::{max, min},
+    collections::HashMap,
+    convert::TryInto,
+    iter::zip,
+};
 
 impl Solution {
     // 1
@@ -176,5 +181,35 @@ impl Solution {
         deoverflow(&mut sums, 2, true);
 
         sums.iter().rev().map(|i: &i32| i.to_string()).collect()
+    }
+
+    // 69
+    pub fn my_sqrt(x: i32) -> i32 {
+        let mut low: i32 = 2;
+        let mut high: i32 = min(x / 2, 46340);
+
+        if x == 0 {
+            return 0;
+        }
+        if x <= 3 {
+            return 1;
+        }
+        if x >= high * high {
+            return high;
+        }
+
+        let mut root: i32;
+        let mut square: i32;
+        while high - low > 1 {
+            root = (low + high) / 2;
+            square = root * root;
+            match square.cmp(&x) {
+                std::cmp::Ordering::Equal => return root,
+                std::cmp::Ordering::Less => low = root,
+                std::cmp::Ordering::Greater => high = root,
+            }
+        }
+
+        low
     }
 }
