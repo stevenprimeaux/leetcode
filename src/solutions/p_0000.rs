@@ -212,4 +212,41 @@ impl Solution {
 
         low
     }
+
+    // 70
+    pub fn climb_stairs(n: i32) -> i32 {
+        let mut a: i32 = 0;
+        let mut b: i32 = 1;
+        let mut c: i32 = 0;
+        let mut count: i32 = 0;
+
+        while count < n {
+            c = a + b;
+            a = b;
+            b = c;
+            count += 1;
+        }
+
+        c
+    }
+
+    // 83
+    pub fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        match head {
+            None => None,
+            Some(node_current) => match node_current.next {
+                None => Some(Box::new(ListNode {
+                    val: node_current.val,
+                    next: None,
+                })),
+                Some(node_next) => match node_current.val == node_next.val {
+                    true => Self::delete_duplicates(Some(node_next)),
+                    false => Some(Box::new(ListNode {
+                        val: node_current.val,
+                        next: Self::delete_duplicates(Some(node_next)),
+                    })),
+                },
+            },
+        }
+    }
 }
