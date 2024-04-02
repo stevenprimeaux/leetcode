@@ -3,16 +3,16 @@ pub fn deoverflow(digits: &mut Vec<i32>, base: i32, reversed: bool) {
         digits.reverse();
     }
 
-    let mut overflow: bool = true;
+    let mut is_overflow: bool = true;
     let mut start_current: usize = 0;
-    while overflow == true {
-        overflow = false;
+    while is_overflow {
+        is_overflow = false;
 
         for i in start_current..digits.len() {
             if digits[i] >= base {
                 if digits.get(i + 1).is_none() {
                     digits.push(0);
-                    overflow = true;
+                    is_overflow = true;
                 }
                 digits[i + 1] += digits[i] / base;
                 digits[i] %= base;

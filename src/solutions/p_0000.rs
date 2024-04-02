@@ -53,7 +53,7 @@ impl Solution {
     pub fn longest_common_prefix(strs: Vec<String>) -> String {
         let mut common: String = "".to_string();
 
-        if let Some(first) = strs.get(0) {
+        if let Some(first) = strs.first() {
             for (i, c) in first.char_indices() {
                 for str in &strs {
                     match str.chars().nth(i) {
@@ -247,6 +247,47 @@ impl Solution {
                     })),
                 },
             },
+        }
+    }
+
+    // 88
+    pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &mut Vec<i32>, n: i32) {
+        if n == 0 {
+            {}
+        } else if m == 0 {
+            std::mem::swap(nums1, nums2);
+        } else {
+            let mut i: usize = (m + n).try_into().unwrap();
+            let mut i_1: usize = (m).try_into().unwrap();
+            let mut i_2: usize = (n).try_into().unwrap();
+            loop {
+                match (i_1, i_2) {
+                    (0, 0) => break,
+                    (_, 0) => {
+                        i -= 1;
+                        i_1 -= 1;
+                    }
+                    (0, _) => {
+                        i -= 1;
+                        i_2 -= 1;
+                        nums1[i] = nums2[i_2];
+                    }
+                    (_, _) => {
+                        i -= 1;
+                        match nums2[i_2 - 1] > nums1[i_1 - 1] {
+                            true => {
+                                i_2 -= 1;
+                                nums1[i] = nums2[i_2];
+                            }
+                            false => {
+                                i_1 -= 1;
+                                nums1[i] = nums1[i_1];
+                                nums1[i_1] = 0;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
