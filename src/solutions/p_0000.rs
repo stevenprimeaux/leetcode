@@ -257,33 +257,29 @@ impl Solution {
         } else if m == 0 {
             std::mem::swap(nums1, nums2);
         } else {
-            let mut i: usize = (m + n).try_into().unwrap();
-            let mut i_1: usize = (m).try_into().unwrap();
-            let mut i_2: usize = (n).try_into().unwrap();
+            let vec_1: Vec<i32> = nums1[0..(m as usize)].to_vec();
+            let mut iter_1 = vec_1.iter().rev().peekable();
+            let mut iter_2 = nums2[0..(n as usize)].iter().rev().peekable();
+
+            let mut i: i32 = m + n;
             loop {
-                match (i_1, i_2) {
-                    (0, 0) => break,
-                    (_, 0) => {
-                        i -= 1;
-                        i_1 -= 1;
+                i -= 1;
+                match (iter_1.peek(), iter_2.peek()) {
+                    (None, None) => break,
+                    (Some(_), None) => {
+                        iter_1.next();
                     }
-                    (0, _) => {
-                        i -= 1;
-                        i_2 -= 1;
-                        nums1[i] = nums2[i_2];
+                    (None, Some(current_2)) => {
+                        nums1[i as usize] = **current_2;
+                        iter_2.next();
                     }
-                    (_, _) => {
-                        i -= 1;
-                        match nums2[i_2 - 1] > nums1[i_1 - 1] {
-                            true => {
-                                i_2 -= 1;
-                                nums1[i] = nums2[i_2];
-                            }
-                            false => {
-                                i_1 -= 1;
-                                nums1[i] = nums1[i_1];
-                                nums1[i_1] = 0;
-                            }
+                    (Some(current_1), Some(current_2)) => {
+                        if current_2 > current_1 {
+                            nums1[i as usize] = **current_2;
+                            iter_2.next();
+                        } else {
+                            nums1[i as usize] = **current_1;
+                            iter_1.next();
                         }
                     }
                 }
